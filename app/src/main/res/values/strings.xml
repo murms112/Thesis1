@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Thesis 1</string>
+    <string name="username">Username:</string>
+    <string name="password">Password:</string>
+    <string name="new_user">NEW USER</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="add_task">ADD TASK</string>
+    <string name="score_text">Score: 0</string>
+    <string name="task_icon">task icon</string>
+    <string name="sustainability_task_name">sustainability task name</string>
+    <string name="score_value">0</string>
+    <string name="title">title</string>
+</resources>

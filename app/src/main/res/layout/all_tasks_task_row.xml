@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/allTask_card_view_friend"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardUseCompatPadding="true"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <TextView
+            android:id="@+id/allTaskTitle"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="261dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="0dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toLeftOf="@id/addTaskBtn"
+            android:lines="3"
+            android:paddingTop="20dp"
+            android:text="@string/title"
+            android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+            android:textSize="19sp" />
+
+        <Button
+            android:id="@+id/addTaskBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="54dp"
+            android:layout_marginRight="54dp"
+            android:layout_marginBottom="33dp"
+            android:text="@string/add_task" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
