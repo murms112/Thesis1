@@ -8,8 +8,11 @@ This project was inspired upon noticing that people are always talking about how
 2. Download the zip file for the Thesis project on Github by clicking the "Clone or Download" button. 
 3. Extract the contents from the zip file into the folder of your choice.
 4. Install Android Studio using the following instructions: https://developer.android.com/studio/install
-5. Launch Android Studio, and on the main welcome screen, select “Import project (Eclipse, ADT, Gradle, etc.)” to begin importing from the zip file you've downloaded. 
+5. Launch Android Studio, and after all of the components are downloaded, on the main welcome screen, select “Import project (Eclipse, ADT, Gradle, etc.)” to begin importing from the zip file you've downloaded. 
 6. Use the Android Studio file browser to locate the extracted folder and import the file.
+7. Select "Create project from existing sources"
+8. Name the project and select the desired location.
+9. For the following prompts, select the default choices that come up.
 
 # Configuring the Project
 1. Create an Android Virtual Device by following these instructions: https://developer.android.com/studio/run/managing-avds#createavd
