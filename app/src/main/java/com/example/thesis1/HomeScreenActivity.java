@@ -1,9 +1,12 @@
 package com.example.thesis1;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,14 +29,19 @@ public class HomeScreenActivity extends AppCompatActivity {
     String password;
     String tempName;
     Integer taskIndex;
+    String relativeTaskIndex;
+    Integer actualTaskIndex;
     ArrayList<Integer> lti = new ArrayList<>();
     ArrayList<SustainableTask> lt = new ArrayList<>();
     ArrayList<SustainableTask> taskList = new ArrayList<>();
     String taskTitle;
     Integer scoreValue;
-    User loggedInUser;
+    static User loggedInUser;
     Integer tempIndex;
     Integer numTasks;
+    int currNumTasks = 0;
+    boolean firstRun = true;
+    static int currScore;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -53,18 +61,30 @@ public class HomeScreenActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.taskRecyclerView);
 
         final Button addTaskBtn = findViewById(R.id.addTaskBtn);
+        TextView scoreTextView = findViewById(R.id.scoreText);
+        String scoreStr = "Score: " + score;
+        scoreTextView.setText(scoreStr);
 
         addTaskBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                moveToLogTaskActivity();
             }
         });
+
+
+    }
+    protected void onResume(){
+        super.onResume();
+        if(!firstRun){
+            getUserTasks();
+        }
     }
     private void moveToLogTaskActivity(){
         Intent intent = new Intent (this, LogTaskActivity.class);
         //add master list of tasks to intent, probably have to implement serializable
         intent.putParcelableArrayListExtra("List of all tasks", lt);
         intent.putExtra("Logged in user", loggedInUser);
+        //intent.putParcelableArrayListExtra("Users logged tasks", loggedInUser.getLoggedTasks());
         startActivity(intent);
     }
     private void createCustomAdapter(){
@@ -74,15 +94,25 @@ public class HomeScreenActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
     private void setUpViewableTasks(){
+        taskList.clear();
         if(loggedInUser.getLoggedTasks()!= null){
-            for(int num: loggedInUser.getLoggedTasks()){
-                SustainableTask temp = lt.get(num);
-                this.taskList.add(temp);
+            //clears the already stored score before calculating it based on what tasks have been logged
+            loggedInUser.setScore(0);
+            if(lt.size() > 0) {
+                for (int num : loggedInUser.getLoggedTasks()) {
+                    SustainableTask temp = lt.get(num);
+                    addUserScore(loggedInUser.getScore(), temp.getScoreValue());
+                    this.taskList.add(temp);
+                }
             }
         }else{
             SustainableTask temp = new SustainableTask("No tasks yet :(", 0);
             this.taskList.add(temp);
         }
+        //it can't find this textview
+        TextView scoreTextView = findViewById(R.id.scoreText);
+        String scoreStr = "Score: " + loggedInUser.getScore();
+        scoreTextView.setText(scoreStr);
         createCustomAdapter();
     }
     private void getTasksFromDatabase(){
@@ -99,6 +129,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                     for(SustainableTask t : lt){
                         System.out.println("THERE'S A LOGGED TASK WITH TITLE: " + t.getTitle());
                     }
+                    firstRun = false;
                     getUserTasks();
                     //getNumUserTasks();
                 }
@@ -110,8 +141,10 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     }
     private void getUserTasks(){
-        DatabaseReference newRef = database.getReference("userDatabase/users/"+username+"/loggedTasks");
-        tempName = username;
+        DatabaseReference newRef = database.getReference("userDatabase/users/"+loggedInUser.getUsername()+"/loggedTasks");
+        if(lti!=null){
+            lti.clear();
+        }
         newRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot secondSnapshot) {
@@ -144,7 +177,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                 }
                 //set actual user's logged tasks
                 loggedInUser.setNumTasks(numTasks);
-                System.out.println("You have " + numTasks + " logged tasks right nooooowwwww");
+                System.out.println("You have " + numTasks + " logged tasks right now");
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -155,8 +188,92 @@ public class HomeScreenActivity extends AppCompatActivity {
     }
 
     //called when task is added
-    private int calculateUserScore(int usrScore, int taskScore){
+    private void addUserScore(int usrScore, int taskScore){
         usrScore = usrScore + taskScore;
-        return usrScore;
+        loggedInUser.setScore(usrScore);
+        saveScoreToDatabase(loggedInUser, loggedInUser.getScore());
+
+
+    }
+    private static void subtractUserScore(int usrScore, int taskScore){
+        usrScore = usrScore - taskScore;
+        loggedInUser.setScore(usrScore);
+        saveScoreToDatabase(loggedInUser, loggedInUser.getScore());
+    }
+
+    static void saveScoreToDatabase(User loggedInUser, int usrScore){
+        //the database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //the reference
+        DatabaseReference myRef = database.getReference("userDatabase/users/"+ loggedInUser.getUsername()+"/score");
+
+        myRef.setValue(usrScore);
+
+    }
+    void reassignTaskIndexes(final int deletedIndex){
+        final DatabaseReference newRef = database.getReference("userDatabase/users/"+loggedInUser.getUsername()+"/loggedTasks");
+        final ArrayList<Integer> relativeTaskIndexes = new ArrayList<>();
+        final ArrayList<Integer> actualTaskIndexes = new ArrayList<>();
+        //final int x;
+        newRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot secondSnapshot) {
+                for (DataSnapshot dataValue : secondSnapshot.getChildren()){
+                    //if (currNumTasks != deletedIndex) {
+                        relativeTaskIndex = dataValue.child(String.valueOf(currNumTasks)).getKey();
+                        actualTaskIndex = dataValue.child("taskIndex").getValue(Integer.class);
+                        actualTaskIndexes.add(actualTaskIndex);
+
+                        final int x = Integer.valueOf(relativeTaskIndex);
+                        if(currNumTasks > deletedIndex){
+                            relativeTaskIndexes.add(x-1);
+                        }
+                        else{
+                            relativeTaskIndexes.add(x);
+                        }
+                        currNumTasks++;
+                    //}
+                    //currNumTasks++;
+                }
+                //save the new indexes to database
+                for(int i: relativeTaskIndexes){
+                    //TODO: save the indexes properly
+                    newRef.child(String.valueOf(i)).child("taskIndex").setValue(actualTaskIndexes.get(i));
+                }
+                final DatabaseReference deleteRef = database.getReference("userDatabase/users/"+loggedInUser.getUsername()+"/loggedTasks/" +relativeTaskIndexes.size());
+                deleteRef.removeValue();
+                currNumTasks = 0;
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+    }
+    void deleteTaskFromDatabase(int index, int taskScore){
+        //the database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //the reference
+        DatabaseReference myRef = database.getReference("userDatabase/users/"+ loggedInUser.getUsername()+"/loggedTasks/"+index);
+        //TODO: this is where you would do the index changing, needs to go through and move all indexes up one
+
+        //DatabaseReference indexRef = database.getReference("userDatabase/users/"+ loggedInUser.getUsername()+"/loggedTasks/");
+
+        subtractUserScore(loggedInUser.getScore(), taskScore);
+
+        //deletes the task at the appropriate index
+        myRef.removeValue();
+
+        reassignTaskIndexes(index);
+
+        //recreates the activity
+        Intent intent= new Intent(HomeScreenActivity.this, HomeScreenActivity.class);
+        intent.putExtra("Logged in username", loggedInUser.getUsername());
+        intent.putExtra("Logged in password", loggedInUser.getPassword());
+        intent.putExtra("User score", loggedInUser.getScore());
+        intent.putExtra("Number of logged tasks", loggedInUser.getNumTasks());
+
+        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
     }
 }

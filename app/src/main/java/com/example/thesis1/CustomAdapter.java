@@ -5,6 +5,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
 
@@ -27,6 +29,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         final View mView;
         private TextView taskTitle;
         private TextView scoreTitle;
+        private ImageView deleteBtn;
 
         CustomViewHolder(View itemView) {
             super(itemView);
@@ -36,6 +39,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
 
             taskTitle = mView.findViewById(R.id.taskTitle);
             scoreTitle = mView.findViewById(R.id.taskScore);
+            deleteBtn = mView.findViewById(R.id.deleteBtn);
         }
 
         @Override
@@ -57,9 +61,26 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     }
 
     @Override
-    public void onBindViewHolder(final CustomViewHolder holder, int position) {
+    public void onBindViewHolder(final CustomViewHolder holder, final int position) {
+        final HomeScreenActivity home = new HomeScreenActivity();
         holder.taskTitle.setText(dataList.get(position).getTitle());
         holder.scoreTitle.setText(String.valueOf(dataList.get(position).getScoreValue()));
+        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //need to get the index of the task that has been clicked
+                int index = holder.getAdapterPosition();
+                String clickedTaskIndex = String.valueOf(index);
+                //method that gets the unique index of that task and removes it from firebase
+                //researched calling activity method from adapter here: https://stackoverflow.com/questions/31059390/android-null-pointer-exception-when-calling-new-intent
+                if(context instanceof HomeScreenActivity){
+                    ((HomeScreenActivity)context).deleteTaskFromDatabase(index, dataList.get(position).getScoreValue());
+                }
+                //home.deleteTaskFromDatabase(context, index, dataList.get(position).getScoreValue());
+
+
+            }
+        });
     }
 
     @Override

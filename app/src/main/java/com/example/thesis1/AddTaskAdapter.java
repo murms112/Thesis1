@@ -64,6 +64,7 @@ public class AddTaskAdapter extends RecyclerView.Adapter<AddTaskAdapter.CustomVi
                 int index = holder.getAdapterPosition();
                 String clickedTaskIndex = String.valueOf(index);
                 LogTaskActivity.addTaskToDatabase(index, clickedTaskIndex);
+
             }
         });
     }
