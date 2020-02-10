@@ -1,15 +1,21 @@
 package com.example.thesis1;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,10 +48,41 @@ public class HomeScreenActivity extends AppCompatActivity {
     int currNumTasks = 0;
     boolean firstRun = true;
     static int currScore;
+    //all drawer related code based upon https://medium.com/quick-code/android-navigation-drawer-e80f7fc2594f
+    private DrawerLayout dl;
+    private ActionBarDrawerToggle t;
+    private NavigationView nv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+
+        dl = findViewById(R.id.activity_home_screen);
+        t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
+        dl.addDrawerListener(t);
+        t.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        nv = findViewById(R.id.nv);
+
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                switch(id)
+                {
+                    case R.id.leaderboard:
+                        Toast.makeText(HomeScreenActivity.this, "Leaderboard",Toast.LENGTH_SHORT).show();break;
+                    case R.id.alternative_fuel_locator:
+                        Toast.makeText(HomeScreenActivity.this, "Alternative Fuel",Toast.LENGTH_SHORT).show();break;
+                    case R.id.environmental_facts:
+                        Toast.makeText(HomeScreenActivity.this, "Environmental Info",Toast.LENGTH_SHORT).show();break;
+                    default:
+                        return true;
+                }
+                return true;
+            }
+        });
 
         //gets the intent that started this activity and extracts the data
         Intent intent = getIntent();
@@ -71,8 +108,16 @@ public class HomeScreenActivity extends AppCompatActivity {
             }
         });
 
-
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (t.onOptionsItemSelected(item))
+            return true;
+
+        return super.onOptionsItemSelected(item);
+    }
+
     protected void onResume(){
         super.onResume();
         if(!firstRun){
