@@ -164,6 +164,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         //intent.putParcelableArrayListExtra("Users logged tasks", loggedInUser.getLoggedTasks());
         startActivity(intent);
 
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
