@@ -1,15 +1,21 @@
 package com.example.thesis1;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,10 +48,44 @@ public class HomeScreenActivity extends AppCompatActivity {
     int currNumTasks = 0;
     boolean firstRun = true;
     static int currScore;
+    //all drawer related code based upon https://medium.com/quick-code/android-navigation-drawer-e80f7fc2594f
+    private DrawerLayout dl;
+    private ActionBarDrawerToggle t;
+    private NavigationView nv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+
+        dl = findViewById(R.id.activity_home_screen);
+        t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
+        dl.addDrawerListener(t);
+        t.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        nv = findViewById(R.id.nv);
+
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                switch(id)
+                {
+                    case R.id.leaderboard:
+                        moveToLeaderboard();
+                        break;
+                    case R.id.alternative_fuel_locator:
+                        moveToAlternativeFuel();
+                        break;
+                    case R.id.environmental_facts:
+                        moveToEnvironmentalInfo();
+                        break;
+                    default:
+                        return true;
+                }
+                return true;
+            }
+        });
 
         //gets the intent that started this activity and extracts the data
         Intent intent = getIntent();
@@ -71,8 +111,69 @@ public class HomeScreenActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void moveToLeaderboard(){
+        //when moving to this activity for real when creating the activity you would need to get all
+        //users and all of their task lists. not sure if this needs to be done in this class.
+        /*DatabaseReference myRef = database.getReference("userDatabase/users");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot taskSnapshot) {
+                for (DataSnapshot dataValue : taskSnapshot.getChildren()){
+                    scoreValue = dataValue.child("scoreValue").getValue(Integer.class);
+                    taskTitle = dataValue.child("taskTitle").getValue(String.class);
+                    SustainableTask t = new SustainableTask(taskTitle, scoreValue);
+                    lt.add(t);
+                }
+                for(SustainableTask t : lt){
+                    System.out.println("THERE'S A LOGGED TASK WITH TITLE: " + t.getTitle());
+                }
+                firstRun = false;
+                getUserTasks();
+                //getNumUserTasks();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });*/
+        Intent intent = new Intent (this, LeaderboardActivity.class);
+        //add master list of tasks to intent, probably have to implement serializable
+        //intent.putParcelableArrayListExtra("List of all tasks", lt);
+        //intent.putExtra("Logged in user", loggedInUser);
+        //intent.putParcelableArrayListExtra("Users logged tasks", loggedInUser.getLoggedTasks());
+        startActivity(intent);
+    }
+
+    private void moveToAlternativeFuel(){
+        Intent intent = new Intent (this, AlternativeFuelActivity.class);
+        //add master list of tasks to intent, probably have to implement serializable
+        //intent.putParcelableArrayListExtra("List of all tasks", lt);
+        //intent.putExtra("Logged in user", loggedInUser);
+        //intent.putParcelableArrayListExtra("Users logged tasks", loggedInUser.getLoggedTasks());
+        startActivity(intent);
 
     }
+
+    private void moveToEnvironmentalInfo(){
+        Intent intent = new Intent (this, EnvironmentalInfoActivity.class);
+        //add master list of tasks to intent, probably have to implement serializable
+        //intent.putParcelableArrayListExtra("List of all tasks", lt);
+        //intent.putExtra("Logged in user", loggedInUser);
+        //intent.putParcelableArrayListExtra("Users logged tasks", loggedInUser.getLoggedTasks());
+        startActivity(intent);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (t.onOptionsItemSelected(item))
+            return true;
+
+        return super.onOptionsItemSelected(item);
+    }
+
     protected void onResume(){
         super.onResume();
         if(!firstRun){

@@ -10,4 +10,6 @@
     <string name="sustainability_task_name">sustainability task name</string>
     <string name="score_value">0</string>
     <string name="title">title</string>
+    <string name="Open">Open</string>
+    <string name="Close">Close</string>
 </resources>
