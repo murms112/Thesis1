@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/leaderboard"
+        android:icon="@drawable/trophypng"
+        android:title="Leaderboard"/>
+    <item android:id="@+id/alternative_fuel_locator"
+        android:icon="@drawable/fuelfinal"
+        android:title="Alternative Fuel"/>
+    <item android:id="@+id/environmental_facts"
+        android:icon="@drawable/leaficon"
+        android:title="Environmental Info"/>
+
+</menu>

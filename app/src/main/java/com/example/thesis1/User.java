@@ -1,9 +1,12 @@
 package com.example.thesis1;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
-class User implements Serializable {
+class User implements Serializable, Comparable<User> {
     private String username;
     private String password;
     private int score;
@@ -32,6 +35,11 @@ class User implements Serializable {
     public User(String username, String password){
         this.username = username;
         this.password = password;
+    }
+
+    public User(String username, Integer score){
+        this.username = username;
+        this.score = score;
     }
 
     public String getUsername(){
@@ -74,4 +82,14 @@ class User implements Serializable {
         this.numTasks = numTasks;
     }
 
+    @Override
+    public int compareTo(User other){
+        //return new User().compareTo(other.getScore());
+        if(this.getScore() > other.getScore()){
+            return 1;
+        }else if(this.getScore() == other.getScore()){
+            return 0;
+        }
+        return -1;
+    }
 }

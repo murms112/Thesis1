@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Thesis 1</string>
+    <string name="app_name">Green Trackr</string>
     <string name="username">Username:</string>
     <string name="password">Password:</string>
     <string name="new_user">NEW USER</string>
@@ -10,4 +10,8 @@
     <string name="sustainability_task_name">sustainability task name</string>
     <string name="score_value">0</string>
     <string name="title">title</string>
+    <string name="Open">Open</string>
+    <string name="Close">Close</string>
+    <string name="leaderboardLabel">Leaderboard</string>
+    <string name="clicked_username">Clicked username</string>
 </resources>
