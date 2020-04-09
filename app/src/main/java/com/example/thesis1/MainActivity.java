@@ -53,13 +53,17 @@ public class MainActivity extends AppCompatActivity {
                     un = dataValues.child("username").getValue(String.class);
                     pw = dataValues.child("password").getValue(String.class);
                     sc = dataValues.child("score").getValue(Integer.class);
-                    numTasks = dataValues.child("amountOfTasks").getValue(Integer.class);
 
-                    //what happens to num Tasks after this point???
-                    User user = new User(un, pw, sc, numTasks);
+                    User user;
+                    if(sc != null){
+                        user = new User(un, pw, sc);
+                    }
+                    else{
+                        user = new User(un, pw);
+                    }
+
                     usersList.add(user);
                 }
-                //getUserTasks();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -157,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("Logged in username", user.getUsername());
         intent.putExtra("Logged in password", user.getPassword());
         intent.putExtra("User score", user.getScore());
-        intent.putExtra("Number of logged tasks", user.getNumTasks());
 
         startActivity(intent);
     }
@@ -210,10 +213,7 @@ public class MainActivity extends AppCompatActivity {
         myRef.child(username).child("username").setValue(username);
         myRef.child(username).child("password").setValue(password);
         myRef.child(username).child("score").setValue(score);
-        myRef.child(username).child("amountOfTasks").setValue(0);
-        //fix this
-        myRef.child(username).child("loggedTasks").child("0").child("taskIndex").setValue(0);
-        User signIn = new User(username, password, score, 0);
+        User signIn = new User(username, password, score);
         signUserIn(signIn);
     }
 
@@ -235,31 +235,5 @@ public class MainActivity extends AppCompatActivity {
         deletedText.setText("this text was deleted");*/
     }
 
-    //part of API POC
-    private void getAPIDataTest(){
-        GetNRELDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetNRELDataService.class);
-        Call<NRELData> call = service.getTestDataBySearch("Zi1fjKapaju8ji3dpqjnPGOayUMTTyzcs9djNaDx", "1617+Cole+Blvd+Golden+CO", "ELEC", 1);
-        call.enqueue(new Callback<NRELData>() {
-            @Override
-            public void onResponse(Call<NRELData> call, Response<NRELData> response) {
-                //progressDialog.dismiss();
-                if(response.body().getFuel_stations() == null ){
-                    Toast.makeText(MainActivity.this, "No fuel stations found at this location :( try again!", Toast.LENGTH_LONG).show();
-                }
-                else{
-                    String city = response.body().getFuel_stations()[0].getCity();
-                    /*TextView dataText = findViewById(R.id.APIDataTextView);
-                    dataText.setText("City of alternative fuel from API: " + city); */
-                }
-            }
-
-            @Override
-            public void onFailure(Call<NRELData> call, Throwable t) {
-                t.printStackTrace();
-                //progressDialog.dismiss();
-                Toast.makeText(MainActivity.this, "Something went wrong with data!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 }
 

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/leaderboard"
+        android:icon="@drawable/trophypng"
+        android:title="Leaderboard"/>
+    <item android:id="@+id/alternatives"
+        android:icon="@drawable/fuelfinal"
+        android:title="Alternative Finder"/>
+    <item android:id="@+id/environmental_facts"
+        android:icon="@drawable/leaficon"
+        android:title="Environmental Info"/>
+    <item android:id="@+id/log_out"
+        android:icon="@drawable/powericon"
+        android:title="Log Out"/>
+
+</menu>
