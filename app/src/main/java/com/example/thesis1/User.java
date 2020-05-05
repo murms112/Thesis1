@@ -88,14 +88,6 @@ class User implements Serializable, Comparable<User> {
         this.numTasks = numTasks;
     }
 
-    /*public String getSalt(){
-        return salt;
-    }
-
-    public void setSalt(String username){
-        this.salt = salt;
-    }*/
-
     @Override
     public int compareTo(User other){
         //return new User().compareTo(other.getScore());

@@ -180,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
         //changed this back to save regular password for demo video
         myRef.child(username).child("password").setValue(securePassword);
         myRef.child(username).child("score").setValue(score);
-
         User signIn = new User(username, password, score);
         signUserIn(signIn);
     }
