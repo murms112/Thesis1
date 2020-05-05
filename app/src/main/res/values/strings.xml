@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Thesis 1</string>
+    <string name="app_name">Green Trackr</string>
     <string name="username">Username:</string>
     <string name="password">Password:</string>
     <string name="new_user">NEW USER</string>
@@ -10,4 +10,22 @@
     <string name="sustainability_task_name">sustainability task name</string>
     <string name="score_value">0</string>
     <string name="title">title</string>
+    <string name="Open">Open</string>
+    <string name="Close">Close</string>
+    <string name="leaderboardLabel">Leaderboard</string>
+    <string name="clicked_username">Clicked username</string>
+    <string name="alternative_fuel">Alternative Fuel</string>
+    <string name="thrift_stores">Thrift Stores</string>
+    <string name="eco_friendly_products">Eco-Friendly Products</string>
+    <string name="fuel_city_name">Beverly, MA</string>
+    <string name="intersection_directions">INTERSECTION DIRECTIONS</string>
+    <string name="street_address">STREET ADDRESS</string>
+    <string name="station_name">STATION NAME</string>
+    <string name="directions">Directions</string>
+    <string name="thrift_shop_name">Thrift shop name</string>
+    <string name="thrift_street_address">Thrift street address</string>
+    <string name="thrift_city_name">Thrift city name</string>
+    <string name="sustainable_products">Sustainable Products</string>
+    <string name="product_name">Sustainable Products</string>
+    <string name="visit_site">VISIT SITE</string>
 </resources>
