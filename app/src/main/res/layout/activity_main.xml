@@ -15,14 +15,16 @@
         android:layout_marginTop="229dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:layout_marginBottom="457dp"
+        android:layout_marginBottom="367dp"
         android:ems="10"
         android:hint="@string/username"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <EditText
         android:id="@+id/enterPassword"
@@ -33,14 +35,16 @@
         android:layout_marginTop="19dp"
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
-        android:layout_marginBottom="393dp"
+        android:layout_marginBottom="293dp"
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enterUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/enterUsername"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/newUserBtn"
@@ -50,7 +54,7 @@
         android:layout_marginLeft="101dp"
         android:layout_marginEnd="222dp"
         android:layout_marginRight="222dp"
-        android:layout_marginBottom="305dp"
+        android:layout_marginBottom="204dp"
         android:text="@string/new_user"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,10 +68,21 @@
         android:layout_marginLeft="32dp"
         android:layout_marginEnd="100dp"
         android:layout_marginRight="100dp"
-        android:layout_marginBottom="305dp"
+        android:layout_marginBottom="204dp"
         android:text="@string/sign_in"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/newUserBtn" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="350dp"
+        android:layout_height="144dp"
+        android:layout_marginTop="152dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/greentrackr_logo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

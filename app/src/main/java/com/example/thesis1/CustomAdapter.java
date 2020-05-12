@@ -76,7 +76,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
                 if(context instanceof HomeScreenActivity){
                     ((HomeScreenActivity)context).deleteTaskFromDatabase(index, dataList.get(position).getScoreValue());
                 }
-                //home.deleteTaskFromDatabase(context, index, dataList.get(position).getScoreValue());
 
 
             }

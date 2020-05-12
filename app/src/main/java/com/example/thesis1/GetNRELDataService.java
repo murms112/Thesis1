@@ -10,6 +10,6 @@ interface GetNRELDataService {
     @GET("api/alt-fuel-stations/v1/nearest.json")
     Call<NRELData> getTestDataBySearch(@Query("api_key") String key,
                                           @Query("location") String location,
-                                          @Query("fuel_type") String fuelType,
-                                          @Query("limit") int limit);
+                                          @Query("fuelType") String fuelType,
+                                          @Query("radius") int radius);
 }

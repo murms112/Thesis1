@@ -6,15 +6,12 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
-import java.util.Random;
 
 public class LogTaskActivity extends AppCompatActivity {
     ArrayList<SustainableTask> lt = new ArrayList<>();
@@ -79,16 +76,8 @@ public class LogTaskActivity extends AppCompatActivity {
         DatabaseReference myRef = database.getReference("userDatabase/users/"+ loggedInUser.getUsername()+"/loggedTasks");
         myRef.child(String.valueOf(numTasks)).child("taskIndex").setValue(index);
 
-        //int taskId = generateTaskID();
-        //myRef.child(String.valueOf(numTasks)).child("taskID").setValue(taskId);
-
         //finishes the activity
         activity.finish();
 
-    }
-    static int generateTaskID(){
-        Random rand = new Random();
-        int randInt = rand.nextInt(1000);
-        return randInt;
     }
 }
