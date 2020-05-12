@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 import java.security.Security;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,11 +33,13 @@ public class MainActivity extends AppCompatActivity {
     String un;
     String pw;
     Integer sc;
+    String salt;
     Integer numTasks;
     static String hexString = "e04fd020ea3a6910a2d808002b30309d";
     boolean userTaken = false;
     boolean userExists = false;
     final List<User> usersList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
